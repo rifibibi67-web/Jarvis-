@@ -1,0 +1,22 @@
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>html,body{margin:0;height:100%;background:transparent;overflow:hidden}canvas{width:100%;height:100%;display:block}</style></head><body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(40,1,.1,100);cam.position.set(0,0,8);
+const rd=new THREE.WebGLRenderer({antialias:true,alpha:true});rd.setSize(innerWidth,innerHeight);rd.setClearColor(0,0);document.body.appendChild(rd.domElement);
+sc.add(new THREE.AmbientLight(0xffffff,.85));const d=new THREE.DirectionalLight(0xffffff,.7);d.position.set(3,5,5);sc.add(d);
+const M=(c,e)=>new THREE.MeshStandardMaterial({color:c,roughness:.35,emissive:e||0});
+const S=(r,m)=>new THREE.Mesh(new THREE.SphereGeometry(r,24,24),m);
+const bot=new THREE.Group();sc.add(bot);
+const body=S(1,M(0x8fa8ff));body.scale.set(1,1.1,.9);body.position.y=-1.5;bot.add(body);
+const head=new THREE.Group();head.position.y=.3;bot.add(head);
+const hs=S(1.35,M(0xf4f6ff));hs.scale.set(1.1,.95,.95);head.add(hs);
+const v=S(1,M(0x14163a));v.scale.set(.95,.62,.4);v.position.set(0,.05,.95);head.add(v);
+const em=M(0x5de0ff,0x5de0ff),eL=S(.2,em),eR=S(.2,em);eL.position.set(-.45,.15,1.25);eR.position.set(.45,.15,1.25);eL.scale.z=eR.scale.z=.4;head.add(eL,eR);
+const mo=S(.12,M(0xff7aa8,0xff7aa8));mo.position.set(0,-.2,1.3);mo.scale.set(1.6,.5,.4);head.add(mo);
+[-1,1].forEach(s=>{const c=S(.16,M(0xff9ab8));c.position.set(s*.85,-.15,1.1);c.scale.set(1,.6,.3);head.add(c)});
+const bl=S(.18,M(0xffd35d,0xffd35d));bl.position.y=1.85;head.add(bl);
+let sp=false,t=0;function speak(x){sp=x}
+(function L(){requestAnimationFrame(L);t+=.03;bot.position.y=Math.sin(t)*.12;head.rotation.y=Math.sin(t*.6)*.25;
+eL.scale.y=eR.scale.y=Math.sin(t*1.7)>.97?.1:1;mo.scale.y=sp?.5+Math.abs(Math.sin(t*9))*1.1:.5;rd.render(sc,cam)})();
+</script></body></html>
